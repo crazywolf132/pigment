@@ -1,0 +1,14 @@
+/target
+**/*.rs.bk
+Cargo.lock
+.pigment-venv/
+.DS_Store
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Local configuration
+.env
+.env.local

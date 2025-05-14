@@ -1,0 +1,27 @@
+[package]
+name = "pigment"
+version = "0.1.0"
+edition = "2024"
+description = "All the colors of the web, by name – case-/space-/snake-insensitive"
+authors = ["Brayden Moon <crazywolf132@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/crazywolf132/pigment"
+documentation = "https://docs.rs/pigment"
+readme = "README.md"
+keywords = ["color", "colour", "rgb", "hex", "ansi"]
+categories = ["graphics", "visualization"]
+exclude = [".gitignore", "build.sh"]
+
+[dependencies]
+phf = { version = "0.11", features = ["macros"] }
+# optional integration
+owo-colors = { version = "4", optional = true }
+
+[build-dependencies]
+which = "7.0.3"
+
+[dev-dependencies]
+
+[features]
+default = []
+owo = ["dep:owo-colors"]
