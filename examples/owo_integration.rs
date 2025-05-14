@@ -18,9 +18,7 @@ fn main() {
         println!("{}", "Azure colored text".color(owo_color));
 
         // Try a few more colors
-        let colors = [
-            "Crimson", "ForestGreen", "DeepSkyBlue", "Gold", "Purple"
-        ];
+        let colors = ["Crimson", "ForestGreen", "DeepSkyBlue", "Gold", "Purple"];
 
         for color_name in colors {
             if let Some(c) = color(color_name) {
