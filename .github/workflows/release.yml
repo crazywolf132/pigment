@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+      
+      - name: Extract version from tag
+        id: extract_version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/v}
+          echo "version=$TAG" >> $GITHUB_OUTPUT
+      
+      - name: Update version in Cargo.toml
+        run: |
+          VERSION=${{ steps.extract_version.outputs.version }}
+          sed -i "s/^version = \".*\"/version = \"$VERSION\"/" Cargo.toml
+      
+      - name: Commit and push changes
+        run: |
+          git add Cargo.toml
+          git commit -m "Bump version to ${{ steps.extract_version.outputs.version }}"
+          git push
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release v${{ steps.extract_version.outputs.version }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
