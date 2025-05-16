@@ -31,6 +31,10 @@ pigment = "0.1.2"
   - [nu-ansi-term](https://github.com/nushell/nu-ansi-term)
   - [yansi](https://github.com/SergioBenitez/yansi)
   - [crossterm](https://github.com/crossterm-rs/crossterm)
+  - [ratatui](https://github.com/ratatui-org/ratatui)
+  - [palette](https://github.com/Ogeon/palette)
+  - [rgb](https://github.com/kornelski/rust-rgb)
+  - [color](https://github.com/YushiOMOTE/rgy)
 
 ## Usage
 
@@ -161,7 +165,51 @@ fn main() {
 }
 ```
 
-Other supported libraries include `anstyle`, `nu-ansi-term`, `yansi`, and `crossterm`.
+#### Additional Integrations
+
+Pigment supports many other color libraries. Here are a few more examples:
+
+##### palette
+
+```toml
+[dependencies]
+pigment = { version = "0.1.2", features = ["palette"] }
+palette = "0.7"
+```
+
+```rust
+use palette::Srgb;
+use pigment::color;
+
+fn main() {
+    let azure = color("Azure").unwrap();
+    let p: Srgb<u8> = azure.into();
+
+    println!("RGB: ({}, {}, {})", p.red, p.green, p.blue);
+}
+```
+
+##### rgb
+
+```toml
+[dependencies]
+pigment = { version = "0.1.2", features = ["rgb"] }
+rgb = "0.8"
+```
+
+```rust
+use rgb::Rgb;
+use pigment::color;
+
+fn main() {
+    let azure = color("Azure").unwrap();
+    let rgb_color: Rgb<u8> = azure.into();
+
+    println!("RGB: {:?}", rgb_color);
+}
+```
+
+Other supported libraries include `anstyle`, `nu-ansi-term`, `yansi`, `crossterm`, `ratatui`, and `color`.
 See the examples directory for more detailed usage examples.
 
 ## License

@@ -23,6 +23,9 @@ nu-ansi-term = { version = "0.50", optional = true }
 yansi = { version = "1.0", optional = true }
 crossterm = { version = "0.29", optional = true }
 ratatui = { version = "0.29.0", optional = true }
+palette = { version = "0.7.6", optional = true }
+rgb = { version = "0.8.37", optional = true }
+color = { version = "0.3.0", optional = true }
 
 [build-dependencies]
 which = "7.0.3"
@@ -39,3 +42,6 @@ nu-ansi-term = ["dep:nu-ansi-term"]
 yansi = ["dep:yansi"]
 crossterm = ["dep:crossterm"]
 ratatui = ["dep:ratatui"]
+palette = ["dep:palette"]
+rgb = ["dep:rgb"]
+color-rs = ["dep:color"]

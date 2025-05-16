@@ -165,3 +165,37 @@ fn test_ratatui_integration() {
         _ => panic!("Expected RGB color"),
     }
 }
+
+#[cfg(feature = "palette")]
+#[test]
+fn test_palette_integration() {
+    let red = color("Red").unwrap();
+    let p: palette::Srgb<u8> = red.into();
+
+    assert_eq!(p.red, 255);
+    assert_eq!(p.green, 0);
+    assert_eq!(p.blue, 0);
+}
+
+#[cfg(feature = "rgb")]
+#[test]
+fn test_rgb_integration() {
+    let red = color("Red").unwrap();
+    let rgb_color: rgb::Rgb<u8> = red.into();
+
+    assert_eq!(rgb_color.r, 255);
+    assert_eq!(rgb_color.g, 0);
+    assert_eq!(rgb_color.b, 0);
+}
+
+#[cfg(feature = "color-rs")]
+#[test]
+fn test_color_rs_integration() {
+    let red = color("Red").unwrap();
+    let c: color::Rgba8 = red.into();
+
+    assert_eq!(c.r, 255);
+    assert_eq!(c.g, 0);
+    assert_eq!(c.b, 0);
+    assert_eq!(c.a, 255); // Full opacity
+}

@@ -88,6 +88,30 @@ impl From<Color> for ratatui::style::Color {
     }
 }
 
+#[cfg(feature = "palette")]
+impl From<Color> for palette::Srgb<u8> {
+    fn from(c: Color) -> Self {
+        let (r, g, b) = c.rgb;
+        palette::Srgb::new(r, g, b)
+    }
+}
+
+#[cfg(feature = "rgb")]
+impl From<Color> for rgb::Rgb<u8> {
+    fn from(c: Color) -> Self {
+        let (r, g, b) = c.rgb;
+        rgb::Rgb { r, g, b }
+    }
+}
+
+#[cfg(feature = "color-rs")]
+impl From<Color> for color::Rgba8 {
+    fn from(c: Color) -> Self {
+        let (r, g, b) = c.rgb;
+        color::Rgba8 { r, g, b, a: 255 } // Full opacity
+    }
+}
+
 use crate::ansi::Ansi;
 
 #[cfg(test)]
@@ -530,6 +554,102 @@ mod tests {
                 }
                 _ => panic!("Expected RGB color"),
             }
+        }
+    }
+
+    #[cfg(feature = "palette")]
+    mod palette_integration {
+        use super::*;
+
+        #[test]
+        fn test_color_to_palette_srgb() {
+            let color = create_test_color("Test Color", "#123456", (18, 52, 86));
+            let p: palette::Srgb<u8> = color.into();
+            assert_eq!(p.red, 18);
+            assert_eq!(p.green, 52);
+            assert_eq!(p.blue, 86);
+        }
+
+        #[test]
+        fn test_color_to_palette_srgb_extremes() {
+            // Test with black
+            let black = create_test_color("Black", "#000000", (0, 0, 0));
+            let black_p: palette::Srgb<u8> = black.into();
+            assert_eq!(black_p.red, 0);
+            assert_eq!(black_p.green, 0);
+            assert_eq!(black_p.blue, 0);
+
+            // Test with white
+            let white = create_test_color("White", "#FFFFFF", (255, 255, 255));
+            let white_p: palette::Srgb<u8> = white.into();
+            assert_eq!(white_p.red, 255);
+            assert_eq!(white_p.green, 255);
+            assert_eq!(white_p.blue, 255);
+        }
+    }
+
+    #[cfg(feature = "rgb")]
+    mod rgb_integration {
+        use super::*;
+
+        #[test]
+        fn test_color_to_rgb() {
+            let color = create_test_color("Test Color", "#123456", (18, 52, 86));
+            let rgb_color: rgb::Rgb<u8> = color.into();
+            assert_eq!(rgb_color.r, 18);
+            assert_eq!(rgb_color.g, 52);
+            assert_eq!(rgb_color.b, 86);
+        }
+
+        #[test]
+        fn test_color_to_rgb_extremes() {
+            // Test with black
+            let black = create_test_color("Black", "#000000", (0, 0, 0));
+            let black_rgb: rgb::Rgb<u8> = black.into();
+            assert_eq!(black_rgb.r, 0);
+            assert_eq!(black_rgb.g, 0);
+            assert_eq!(black_rgb.b, 0);
+
+            // Test with white
+            let white = create_test_color("White", "#FFFFFF", (255, 255, 255));
+            let white_rgb: rgb::Rgb<u8> = white.into();
+            assert_eq!(white_rgb.r, 255);
+            assert_eq!(white_rgb.g, 255);
+            assert_eq!(white_rgb.b, 255);
+        }
+    }
+
+    #[cfg(feature = "color-rs")]
+    mod color_rs_integration {
+        use super::*;
+
+        #[test]
+        fn test_color_to_color_rs_rgba8() {
+            let color = create_test_color("Test Color", "#123456", (18, 52, 86));
+            let c: color::Rgba8 = color.into();
+            assert_eq!(c.r, 18);
+            assert_eq!(c.g, 52);
+            assert_eq!(c.b, 86);
+            assert_eq!(c.a, 255); // Full opacity
+        }
+
+        #[test]
+        fn test_color_to_color_rs_rgba8_extremes() {
+            // Test with black
+            let black = create_test_color("Black", "#000000", (0, 0, 0));
+            let black_c: color::Rgba8 = black.into();
+            assert_eq!(black_c.r, 0);
+            assert_eq!(black_c.g, 0);
+            assert_eq!(black_c.b, 0);
+            assert_eq!(black_c.a, 255); // Full opacity
+
+            // Test with white
+            let white = create_test_color("White", "#FFFFFF", (255, 255, 255));
+            let white_c: color::Rgba8 = white.into();
+            assert_eq!(white_c.r, 255);
+            assert_eq!(white_c.g, 255);
+            assert_eq!(white_c.b, 255);
+            assert_eq!(white_c.a, 255); // Full opacity
         }
     }
 
