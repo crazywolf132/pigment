@@ -2,7 +2,6 @@
 
 [![Crates.io](https://img.shields.io/crates/v/pigment.svg)](https://crates.io/crates/pigment)
 [![Documentation](https://docs.rs/pigment/badge.svg)](https://docs.rs/pigment)
-[![CI](https://github.com/crazywolf132/pigment/actions/workflows/ci.yml/badge.svg)](https://github.com/crazywolf132/pigment/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 All the colors of the web, by name – case-/space-/snake-insensitive.
@@ -15,7 +14,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-pigment = "0.1.0"
+pigment = "0.1.1"
 ```
 
 ## Features
@@ -78,7 +77,7 @@ Enable the `owo` feature in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-pigment = { version = "0.1.0", features = ["owo"] }
+pigment = { version = "0.1.1", features = ["owo"] }
 owo-colors = "4"
 ```
 
