@@ -23,7 +23,14 @@ pigment = "0.1.1"
 - **Forgiving lookups**: Case-insensitive, ignores spaces and special characters
 - **Multiple formats**: Access colors as hex codes or RGB tuples
 - **ANSI terminal support**: Built-in support for ANSI color codes
-- **Optional owo-colors integration**: Enable the `owo` feature for integration with the popular owo-colors crate
+- **Multiple library integrations**: Optional integrations with popular color libraries:
+  - [owo-colors](https://github.com/jam1garner/owo-colors)
+  - [termcolor](https://github.com/BurntSushi/termcolor)
+  - [colored](https://github.com/colored-rs/colored)
+  - [anstyle](https://github.com/rust-cli/anstyle)
+  - [nu-ansi-term](https://github.com/nushell/nu-ansi-term)
+  - [yansi](https://github.com/SergioBenitez/yansi)
+  - [crossterm](https://github.com/crossterm-rs/crossterm)
 
 ## Usage
 
@@ -71,7 +78,11 @@ fn main() {
 }
 ```
 
-### Integration with owo-colors
+### Library Integrations
+
+Pigment can integrate with several popular Rust color libraries. Here are some examples:
+
+#### owo-colors
 
 Enable the `owo` feature in your `Cargo.toml`:
 
@@ -97,6 +108,61 @@ fn main() {
     println!("{}", "Azure colored text".color(owo_color));
 }
 ```
+
+#### termcolor
+
+Enable the `termcolor` feature in your `Cargo.toml`:
+
+```toml
+[dependencies]
+pigment = { version = "0.1.1", features = ["termcolor"] }
+termcolor = "1.2"
+```
+
+Then use it like this:
+
+```rust
+use std::io::Write;
+use termcolor::{ColorChoice, ColorSpec, StandardStream, WriteColor};
+use pigment::color;
+
+fn main() {
+    let azure = color("Azure").unwrap();
+    let tc_color: termcolor::Color = azure.into();
+
+    let mut stdout = StandardStream::stdout(ColorChoice::Always);
+    stdout.set_color(ColorSpec::new().set_fg(Some(tc_color))).unwrap();
+    writeln!(&mut stdout, "Azure colored text").unwrap();
+    stdout.reset().unwrap();
+}
+```
+
+#### colored
+
+Enable the `colored` feature in your `Cargo.toml`:
+
+```toml
+[dependencies]
+pigment = { version = "0.1.1", features = ["colored"] }
+colored = "2"
+```
+
+Then use it like this:
+
+```rust
+use colored::Colorize;
+use pigment::color;
+
+fn main() {
+    let azure = color("Azure").unwrap();
+    let c_color: colored::Color = azure.into();
+
+    println!("{}", "Azure colored text".color(c_color));
+}
+```
+
+Other supported libraries include `anstyle`, `nu-ansi-term`, `yansi`, and `crossterm`.
+See the examples directory for more detailed usage examples.
 
 ## License
 

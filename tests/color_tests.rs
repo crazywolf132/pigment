@@ -53,3 +53,99 @@ fn test_owo_integration() {
     assert_eq!(owo_rgb.1, 0);
     assert_eq!(owo_rgb.2, 0);
 }
+
+#[cfg(feature = "termcolor")]
+#[test]
+fn test_termcolor_integration() {
+    let red = color("Red").unwrap();
+    let tc: termcolor::Color = red.into();
+
+    match tc {
+        termcolor::Color::Rgb(r, g, b) => {
+            assert_eq!(r, 255);
+            assert_eq!(g, 0);
+            assert_eq!(b, 0);
+        }
+        _ => panic!("Expected RGB color"),
+    }
+}
+
+#[cfg(feature = "colored")]
+#[test]
+fn test_colored_integration() {
+    let red = color("Red").unwrap();
+    let c: colored::Color = red.into();
+
+    match c {
+        colored::Color::TrueColor { r, g, b } => {
+            assert_eq!(r, 255);
+            assert_eq!(g, 0);
+            assert_eq!(b, 0);
+        }
+        _ => panic!("Expected TrueColor"),
+    }
+}
+
+#[cfg(feature = "anstyle")]
+#[test]
+fn test_anstyle_integration() {
+    let red = color("Red").unwrap();
+    let a: anstyle::Color = red.into();
+
+    match a {
+        anstyle::Color::Rgb(rgb) => {
+            assert_eq!(rgb.0, 255);
+            assert_eq!(rgb.1, 0);
+            assert_eq!(rgb.2, 0);
+        }
+        _ => panic!("Expected RGB color"),
+    }
+}
+
+#[cfg(feature = "nu-ansi-term")]
+#[test]
+fn test_nu_ansi_term_integration() {
+    let red = color("Red").unwrap();
+    let nat: nu_ansi_term::Color = red.into();
+
+    match nat {
+        nu_ansi_term::Color::Rgb(r, g, b) => {
+            assert_eq!(r, 255);
+            assert_eq!(g, 0);
+            assert_eq!(b, 0);
+        }
+        _ => panic!("Expected RGB color"),
+    }
+}
+
+#[cfg(feature = "yansi")]
+#[test]
+fn test_yansi_integration() {
+    let red = color("Red").unwrap();
+    let y: yansi::Color = red.into();
+
+    match y {
+        yansi::Color::Rgb(r, g, b) => {
+            assert_eq!(r, 255);
+            assert_eq!(g, 0);
+            assert_eq!(b, 0);
+        }
+        _ => panic!("Expected RGB color"),
+    }
+}
+
+#[cfg(feature = "crossterm")]
+#[test]
+fn test_crossterm_integration() {
+    let red = color("Red").unwrap();
+    let ct: crossterm::style::Color = red.into();
+
+    match ct {
+        crossterm::style::Color::Rgb { r, g, b } => {
+            assert_eq!(r, 255);
+            assert_eq!(g, 0);
+            assert_eq!(b, 0);
+        }
+        _ => panic!("Expected RGB color"),
+    }
+}

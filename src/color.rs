@@ -32,6 +32,54 @@ impl From<Color> for owo_colors::Rgb {
     }
 }
 
+#[cfg(feature = "termcolor")]
+impl From<Color> for termcolor::Color {
+    fn from(c: Color) -> Self {
+        let (r, g, b) = c.rgb;
+        termcolor::Color::Rgb(r, g, b)
+    }
+}
+
+#[cfg(feature = "colored")]
+impl From<Color> for colored::Color {
+    fn from(c: Color) -> Self {
+        let (r, g, b) = c.rgb;
+        colored::Color::TrueColor { r, g, b }
+    }
+}
+
+#[cfg(feature = "anstyle")]
+impl From<Color> for anstyle::Color {
+    fn from(c: Color) -> Self {
+        let (r, g, b) = c.rgb;
+        anstyle::Color::Rgb(anstyle::RgbColor(r, g, b))
+    }
+}
+
+#[cfg(feature = "nu-ansi-term")]
+impl From<Color> for nu_ansi_term::Color {
+    fn from(c: Color) -> Self {
+        let (r, g, b) = c.rgb;
+        nu_ansi_term::Color::Rgb(r, g, b)
+    }
+}
+
+#[cfg(feature = "yansi")]
+impl From<Color> for yansi::Color {
+    fn from(c: Color) -> Self {
+        let (r, g, b) = c.rgb;
+        yansi::Color::Rgb(r, g, b)
+    }
+}
+
+#[cfg(feature = "crossterm")]
+impl From<Color> for crossterm::style::Color {
+    fn from(c: Color) -> Self {
+        let (r, g, b) = c.rgb;
+        crossterm::style::Color::Rgb { r, g, b }
+    }
+}
+
 use crate::ansi::Ansi;
 
 #[cfg(test)]
@@ -152,6 +200,282 @@ mod tests {
             assert_eq!(white_owo.0, 255);
             assert_eq!(white_owo.1, 255);
             assert_eq!(white_owo.2, 255);
+        }
+    }
+
+    #[cfg(feature = "termcolor")]
+    mod termcolor_integration {
+        use super::*;
+
+        #[test]
+        fn test_color_to_termcolor() {
+            let color = create_test_color("Test Color", "#123456", (18, 52, 86));
+            let tc: termcolor::Color = color.into();
+            match tc {
+                termcolor::Color::Rgb(r, g, b) => {
+                    assert_eq!(r, 18);
+                    assert_eq!(g, 52);
+                    assert_eq!(b, 86);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+        }
+
+        #[test]
+        fn test_color_to_termcolor_extremes() {
+            // Test with black
+            let black = create_test_color("Black", "#000000", (0, 0, 0));
+            let black_tc: termcolor::Color = black.into();
+            match black_tc {
+                termcolor::Color::Rgb(r, g, b) => {
+                    assert_eq!(r, 0);
+                    assert_eq!(g, 0);
+                    assert_eq!(b, 0);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+
+            // Test with white
+            let white = create_test_color("White", "#FFFFFF", (255, 255, 255));
+            let white_tc: termcolor::Color = white.into();
+            match white_tc {
+                termcolor::Color::Rgb(r, g, b) => {
+                    assert_eq!(r, 255);
+                    assert_eq!(g, 255);
+                    assert_eq!(b, 255);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+        }
+    }
+
+    #[cfg(feature = "colored")]
+    mod colored_integration {
+        use super::*;
+
+        #[test]
+        fn test_color_to_colored() {
+            let color = create_test_color("Test Color", "#123456", (18, 52, 86));
+            let c: colored::Color = color.into();
+            match c {
+                colored::Color::TrueColor { r, g, b } => {
+                    assert_eq!(r, 18);
+                    assert_eq!(g, 52);
+                    assert_eq!(b, 86);
+                }
+                _ => panic!("Expected TrueColor"),
+            }
+        }
+
+        #[test]
+        fn test_color_to_colored_extremes() {
+            // Test with black
+            let black = create_test_color("Black", "#000000", (0, 0, 0));
+            let black_c: colored::Color = black.into();
+            match black_c {
+                colored::Color::TrueColor { r, g, b } => {
+                    assert_eq!(r, 0);
+                    assert_eq!(g, 0);
+                    assert_eq!(b, 0);
+                }
+                _ => panic!("Expected TrueColor"),
+            }
+
+            // Test with white
+            let white = create_test_color("White", "#FFFFFF", (255, 255, 255));
+            let white_c: colored::Color = white.into();
+            match white_c {
+                colored::Color::TrueColor { r, g, b } => {
+                    assert_eq!(r, 255);
+                    assert_eq!(g, 255);
+                    assert_eq!(b, 255);
+                }
+                _ => panic!("Expected TrueColor"),
+            }
+        }
+    }
+
+    #[cfg(feature = "anstyle")]
+    mod anstyle_integration {
+        use super::*;
+
+        #[test]
+        fn test_color_to_anstyle() {
+            let color = create_test_color("Test Color", "#123456", (18, 52, 86));
+            let a: anstyle::Color = color.into();
+            match a {
+                anstyle::Color::Rgb(rgb) => {
+                    assert_eq!(rgb.0, 18);
+                    assert_eq!(rgb.1, 52);
+                    assert_eq!(rgb.2, 86);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+        }
+
+        #[test]
+        fn test_color_to_anstyle_extremes() {
+            // Test with black
+            let black = create_test_color("Black", "#000000", (0, 0, 0));
+            let black_a: anstyle::Color = black.into();
+            match black_a {
+                anstyle::Color::Rgb(rgb) => {
+                    assert_eq!(rgb.0, 0);
+                    assert_eq!(rgb.1, 0);
+                    assert_eq!(rgb.2, 0);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+
+            // Test with white
+            let white = create_test_color("White", "#FFFFFF", (255, 255, 255));
+            let white_a: anstyle::Color = white.into();
+            match white_a {
+                anstyle::Color::Rgb(rgb) => {
+                    assert_eq!(rgb.0, 255);
+                    assert_eq!(rgb.1, 255);
+                    assert_eq!(rgb.2, 255);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+        }
+    }
+
+    #[cfg(feature = "nu-ansi-term")]
+    mod nu_ansi_term_integration {
+        use super::*;
+
+        #[test]
+        fn test_color_to_nu_ansi_term() {
+            let color = create_test_color("Test Color", "#123456", (18, 52, 86));
+            let nat: nu_ansi_term::Color = color.into();
+            match nat {
+                nu_ansi_term::Color::Rgb(r, g, b) => {
+                    assert_eq!(r, 18);
+                    assert_eq!(g, 52);
+                    assert_eq!(b, 86);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+        }
+
+        #[test]
+        fn test_color_to_nu_ansi_term_extremes() {
+            // Test with black
+            let black = create_test_color("Black", "#000000", (0, 0, 0));
+            let black_nat: nu_ansi_term::Color = black.into();
+            match black_nat {
+                nu_ansi_term::Color::Rgb(r, g, b) => {
+                    assert_eq!(r, 0);
+                    assert_eq!(g, 0);
+                    assert_eq!(b, 0);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+
+            // Test with white
+            let white = create_test_color("White", "#FFFFFF", (255, 255, 255));
+            let white_nat: nu_ansi_term::Color = white.into();
+            match white_nat {
+                nu_ansi_term::Color::Rgb(r, g, b) => {
+                    assert_eq!(r, 255);
+                    assert_eq!(g, 255);
+                    assert_eq!(b, 255);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+        }
+    }
+
+    #[cfg(feature = "yansi")]
+    mod yansi_integration {
+        use super::*;
+
+        #[test]
+        fn test_color_to_yansi() {
+            let color = create_test_color("Test Color", "#123456", (18, 52, 86));
+            let y: yansi::Color = color.into();
+            match y {
+                yansi::Color::Rgb(r, g, b) => {
+                    assert_eq!(r, 18);
+                    assert_eq!(g, 52);
+                    assert_eq!(b, 86);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+        }
+
+        #[test]
+        fn test_color_to_yansi_extremes() {
+            // Test with black
+            let black = create_test_color("Black", "#000000", (0, 0, 0));
+            let black_y: yansi::Color = black.into();
+            match black_y {
+                yansi::Color::Rgb(r, g, b) => {
+                    assert_eq!(r, 0);
+                    assert_eq!(g, 0);
+                    assert_eq!(b, 0);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+
+            // Test with white
+            let white = create_test_color("White", "#FFFFFF", (255, 255, 255));
+            let white_y: yansi::Color = white.into();
+            match white_y {
+                yansi::Color::Rgb(r, g, b) => {
+                    assert_eq!(r, 255);
+                    assert_eq!(g, 255);
+                    assert_eq!(b, 255);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+        }
+    }
+
+    #[cfg(feature = "crossterm")]
+    mod crossterm_integration {
+        use super::*;
+
+        #[test]
+        fn test_color_to_crossterm() {
+            let color = create_test_color("Test Color", "#123456", (18, 52, 86));
+            let ct: crossterm::style::Color = color.into();
+            match ct {
+                crossterm::style::Color::Rgb { r, g, b } => {
+                    assert_eq!(r, 18);
+                    assert_eq!(g, 52);
+                    assert_eq!(b, 86);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+        }
+
+        #[test]
+        fn test_color_to_crossterm_extremes() {
+            // Test with black
+            let black = create_test_color("Black", "#000000", (0, 0, 0));
+            let black_ct: crossterm::style::Color = black.into();
+            match black_ct {
+                crossterm::style::Color::Rgb { r, g, b } => {
+                    assert_eq!(r, 0);
+                    assert_eq!(g, 0);
+                    assert_eq!(b, 0);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+
+            // Test with white
+            let white = create_test_color("White", "#FFFFFF", (255, 255, 255));
+            let white_ct: crossterm::style::Color = white.into();
+            match white_ct {
+                crossterm::style::Color::Rgb { r, g, b } => {
+                    assert_eq!(r, 255);
+                    assert_eq!(g, 255);
+                    assert_eq!(b, 255);
+                }
+                _ => panic!("Expected RGB color"),
+            }
         }
     }
 
