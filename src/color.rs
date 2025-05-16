@@ -80,6 +80,14 @@ impl From<Color> for crossterm::style::Color {
     }
 }
 
+#[cfg(feature = "ratatui")]
+impl From<Color> for ratatui::style::Color {
+    fn from(c: Color) -> Self {
+        let (r, g, b) = c.rgb;
+        ratatui::style::Color::Rgb(r, g, b)
+    }
+}
+
 use crate::ansi::Ansi;
 
 #[cfg(test)]
@@ -470,6 +478,52 @@ mod tests {
             let white_ct: crossterm::style::Color = white.into();
             match white_ct {
                 crossterm::style::Color::Rgb { r, g, b } => {
+                    assert_eq!(r, 255);
+                    assert_eq!(g, 255);
+                    assert_eq!(b, 255);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+        }
+    }
+
+    #[cfg(feature = "ratatui")]
+    mod ratatui_integration {
+        use super::*;
+
+        #[test]
+        fn test_color_to_ratatui() {
+            let color = create_test_color("Test Color", "#123456", (18, 52, 86));
+            let rt: ratatui::style::Color = color.into();
+            match rt {
+                ratatui::style::Color::Rgb(r, g, b) => {
+                    assert_eq!(r, 18);
+                    assert_eq!(g, 52);
+                    assert_eq!(b, 86);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+        }
+
+        #[test]
+        fn test_color_to_ratatui_extremes() {
+            // Test with black
+            let black = create_test_color("Black", "#000000", (0, 0, 0));
+            let black_rt: ratatui::style::Color = black.into();
+            match black_rt {
+                ratatui::style::Color::Rgb(r, g, b) => {
+                    assert_eq!(r, 0);
+                    assert_eq!(g, 0);
+                    assert_eq!(b, 0);
+                }
+                _ => panic!("Expected RGB color"),
+            }
+
+            // Test with white
+            let white = create_test_color("White", "#FFFFFF", (255, 255, 255));
+            let white_rt: ratatui::style::Color = white.into();
+            match white_rt {
+                ratatui::style::Color::Rgb(r, g, b) => {
                     assert_eq!(r, 255);
                     assert_eq!(g, 255);
                     assert_eq!(b, 255);

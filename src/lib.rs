@@ -21,9 +21,9 @@ fn canonical(s: &str) -> String {
         .collect()
 }
 
-/// Look up a colour by (reasonably forgiving) name.
+/// Look up a color by (reasonably forgiving) name.
 pub fn color(name: &str) -> Option<Color> {
-    COLOURS.get(&canonical(name)).copied()
+    COLORS.get(&canonical(name)).copied()
 }
 
 #[cfg(test)]
@@ -286,7 +286,7 @@ mod tests {
             assert!(color_result.is_some());
 
             // The canonical name should match what's in the color map
-            assert!(COLOURS.get(&canonical_name).is_some());
+            assert!(COLORS.get(&canonical_name).is_some());
         }
 
         #[test]
@@ -300,9 +300,9 @@ mod tests {
             assert_eq!(canonical_blue, "blue");
             assert_eq!(canonical_green, "green");
 
-            assert!(COLOURS.get(&canonical_red).is_some());
-            assert!(COLOURS.get(&canonical_blue).is_some());
-            assert!(COLOURS.get(&canonical_green).is_some());
+            assert!(COLORS.get(&canonical_red).is_some());
+            assert!(COLORS.get(&canonical_blue).is_some());
+            assert!(COLORS.get(&canonical_green).is_some());
         }
     }
 }

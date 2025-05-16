@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Scrapes colour tables from the three Wikipedia pages and spits
+Scrapes color tables from the three Wikipedia pages and spits
 `generated/colors.rs`, ready to be `include!`-d by the Rust crate.
 
 Run:  python tools/scrape.py
@@ -52,9 +52,9 @@ colors_rs.parent.mkdir(exist_ok=True)
 with colors_rs.open("w") as f:
     f.write("///  ***  AUTO-GENERATED  – DO NOT EDIT BY HAND  ***\n")
     f.write("use phf::{phf_map};\n\n")
-    f.write("pub static COLOURS: phf::Map<&'static str, crate::Color> = phf_map! {\n")
+    f.write("pub static COLORS: phf::Map<&'static str, crate::Color> = phf_map! {\n")
     for key, name, hx, r, g, b in out:
         f.write(f'    "{key}" => crate::Color{{ name:"{name}", hex:"{hx}", rgb:({r},{g},{b}) }},\n')
     f.write("};\n")
 
-print(f"Wrote {colors_rs} with {len(out)} colours")
+print(f"Wrote {colors_rs} with {len(out)} colors")

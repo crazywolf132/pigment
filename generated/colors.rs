@@ -1,7 +1,7 @@
 ///  ***  AUTO-GENERATED  – DO NOT EDIT BY HAND  ***
 use phf::{phf_map};
 
-pub static COLOURS: phf::Map<&'static str, crate::Color> = phf_map! {
+pub static COLORS: phf::Map<&'static str, crate::Color> = phf_map! {
     "absolutezero" => crate::Color{ name:"Absolute Zero", hex:"#0048BA", rgb:(0,72,186) },
     "acidgreen" => crate::Color{ name:"Acid green", hex:"#B0BF1A", rgb:(176,191,26) },
     "aero" => crate::Color{ name:"Aero", hex:"#7CB9E8", rgb:(124,185,232) },

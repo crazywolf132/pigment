@@ -149,3 +149,19 @@ fn test_crossterm_integration() {
         _ => panic!("Expected RGB color"),
     }
 }
+
+#[cfg(feature = "ratatui")]
+#[test]
+fn test_ratatui_integration() {
+    let red = color("Red").unwrap();
+    let rt: ratatui::style::Color = red.into();
+
+    match rt {
+        ratatui::style::Color::Rgb(r, g, b) => {
+            assert_eq!(r, 255);
+            assert_eq!(g, 0);
+            assert_eq!(b, 0);
+        }
+        _ => panic!("Expected RGB color"),
+    }
+}
