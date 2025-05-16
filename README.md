@@ -14,7 +14,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-pigment = "0.1.1"
+pigment = "0.1.2"
 ```
 
 ## Features
@@ -88,7 +88,7 @@ Enable the `owo` feature in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-pigment = { version = "0.1.1", features = ["owo"] }
+pigment = { version = "0.1.2", features = ["owo"] }
 owo-colors = "4"
 ```
 
@@ -115,7 +115,7 @@ Enable the `termcolor` feature in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-pigment = { version = "0.1.1", features = ["termcolor"] }
+pigment = { version = "0.1.2", features = ["termcolor"] }
 termcolor = "1.2"
 ```
 
@@ -143,7 +143,7 @@ Enable the `colored` feature in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-pigment = { version = "0.1.1", features = ["colored"] }
+pigment = { version = "0.1.2", features = ["colored"] }
 colored = "2"
 ```
 

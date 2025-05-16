@@ -69,7 +69,7 @@ The project uses GitHub Actions for continuous integration and deployment:
 
 1. **CI Workflow**: Runs tests, formatting checks, and linting on all pull requests and pushes to the main branch.
 
-2. **Release Workflow**: When you create a new tag with the format `v*` (e.g., `v0.1.1`), it will:
+2. **Release Workflow**: When you create a new tag with the format `v*` (e.g., `v0.1.2`), it will:
    - Update the version in Cargo.toml
    - Create a GitHub release
    - Trigger the publish workflow
@@ -86,8 +86,8 @@ git checkout main
 git pull
 
 # Create and push a new tag
-git tag v0.1.1
-git push origin v0.1.1
+git tag v0.1.2
+git push origin v0.1.2
 ```
 
 The GitHub Actions workflows will handle the rest automatically.
